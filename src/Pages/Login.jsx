@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Login.css';
 
 const Login = () => {
@@ -9,6 +10,7 @@ const Login = () => {
     rememberMe: false
   });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -18,14 +20,35 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', formData);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        { withCredentials: true }
+      );
+
+      console.log("Login Success:", response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      alert("Login successful!");
+      navigate('/');
+      // Example: localStorage.setItem("token", response.data.token);
+      // You can redirect here too
+
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      alert("Invalid credentials");
+    }
   };
 
   return (
     <div className="login-container">
-      {/* Main Content */}
       <main className="login-main">
         <div className="login-wrapper">
           <div className="login-left">
@@ -58,7 +81,7 @@ const Login = () => {
                 <p>Access your SwapNest account</p>
               </div>
 
-              <div className="login-form">
+              <form className="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
                   <input
@@ -102,42 +125,24 @@ const Login = () => {
                       checked={formData.rememberMe}
                       onChange={handleInputChange}
                     />
-                    {/* <span className="checkmark"></span> */}
                     Remember me
                   </label>
                   <a href="#" className="forgot-password">Forgot Password?</a>
                 </div>
 
-                <button className="login-submit-btn" onClick={handleSubmit}>
+                <button type="submit" className="login-submit-btn">
                   Sign In
                 </button>
 
-                {/* <div className="auth-divider">
-                  <span>or</span>
-                </div>
-
-                <div className="social-login">
-                  <button type="button" className="social-btn google-btn">
-                    <span className="social-icon">🔍</span>
-                    Continue with Google
-                  </button>
-                  <button type="button" className="social-btn facebook-btn">
-                    <span className="social-icon">📘</span>
-                    Continue with Facebook
-                  </button>
-                </div> */}
-
                 <p className="auth-switch">
-                    Don't have an account?
-                    <Link to="/signup" className="switch-link">Sign Up</Link>
+                  Don't have an account?
+                  <Link to="/signup" className="switch-link">Sign Up</Link>
                 </p>
-
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </main>
-
     </div>
   );
 };
