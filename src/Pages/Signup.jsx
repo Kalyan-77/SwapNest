@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Signup.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    // firstName: '',
-    // lastName: '',
-    userName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
     agreeToTerms: false
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -23,7 +24,7 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
@@ -33,12 +34,23 @@ const Signup = () => {
       alert('Please agree to the terms and conditions!');
       return;
     }
-    console.log('Signup:', formData);
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/users', {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
+      alert('Registration successful!');
+      navigate('/login'); // redirect to login page
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Registration failed.');
+    }
   };
 
   return (
     <div className="signup-container">
-      {/* Main Content */}
       <main className="signup-main">
         <div className="signup-wrapper">
           <div className="signup-left">
@@ -48,155 +60,93 @@ const Signup = () => {
                 Create your account and start buying and selling with confidence
               </p>
               <div className="hero-features">
-                <div className="feature-item">
-                  <span className="feature-icon">🚀</span>
-                  <span>Quick setup process</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🌟</span>
-                  <span>Access to premium features</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🤝</span>
-                  <span>Join trusted community</span>
-                </div>
+                <div className="feature-item">🚀 Quick setup process</div>
+                <div className="feature-item">🌟 Access to premium features</div>
+                <div className="feature-item">🤝 Join trusted community</div>
               </div>
             </div>
           </div>
 
           <div className="signup-right">
             <div className="signup-form-container">
-              <div className="signup-header-text">
-                <h2>Create Account</h2>
-                <p>Start your SwapNest journey today</p>
-              </div>
+              <h2>Create Account</h2>
+              <p>Start your SwapNest journey today</p>
 
-              <div className="signup-form">
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="firstName">User Name</label>
-                    <input
-                      type="text"
-                      id="userName"
-                      name="userName"
-                      value={formData.userName}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Enter your User Name"
-                    />
-                  </div>
-                  {/* <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Enter your last name"
-                    />
-                  </div> */}
-                </div>
-
+              <form className="signup-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="email">Email Address</label>
+                  <label>User Name</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email Address</label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    placeholder="Enter your email"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label>Password</label>
                   <div className="password-input-container">
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      id="password"
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
                       required
-                      placeholder="Enter your password"
                     />
-                    <button
-                      type="button"
-                      className="password-toggle"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
+                    <button type="button" onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
-                  </div>
-                  <div className="password-requirements">
-                    <small>Password must be at least 8 characters long</small>
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirm Password</label>
+                  <label>Confirm Password</label>
                   <div className="password-input-container">
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
-                      id="confirmPassword"
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
-                      placeholder="Confirm your password"
                     />
-                    <button
-                      type="button"
-                      className="password-toggle"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    >
+                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                       {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label className="checkbox-label">
-                    <input 
+                  <label>
+                    <input
                       type="checkbox"
                       name="agreeToTerms"
                       checked={formData.agreeToTerms}
                       onChange={handleInputChange}
-                      required
                     />
-                    {/* <span className="checkmark"></span> */}
-                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
                   </label>
                 </div>
 
-                <button className="signup-submit-btn" onClick={handleSubmit}>
+                <button className="signup-submit-btn" type="submit">
                   Create Account
                 </button>
+              </form>
 
-                {/* <div className="auth-divider">
-                  <span>or</span>
-                </div> */}
-
-                {/* <div className="social-login">
-                  <button type="button" className="social-btn google-btn">
-                    <span className="social-icon">🔍</span>
-                    Continue with Google
-                  </button>
-                  <button type="button" className="social-btn facebook-btn">
-                    <span className="social-icon">📘</span>
-                    Continue with Facebook
-                  </button>
-                </div> */}
-
-                <p className="auth-switch">
-                  Already have an account?
-                   <Link to="/login" className="switch-link">Sign Up</Link>
-                </p>
-              </div>
+              <p className="auth-switch">
+                Already have an account?
+                <Link to="/login" className="switch-link">Login</Link>
+              </p>
             </div>
           </div>
         </div>
