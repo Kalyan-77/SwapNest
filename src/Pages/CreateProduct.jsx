@@ -4,13 +4,15 @@ import './CreateProduct.css';
 
 const CreateProducts = () => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    condition: '',
-    price: '',
-    location: '',
-    contactPreference: 'Phone'
+  title: '',
+  description: '',
+  category: '',
+  condition: '',
+  price: '',
+  location: '',
+  phone: '',
+  email: '',
+  message: ''
   });
 
   const handleInputChange = (e) => {
@@ -174,7 +176,7 @@ const CreateProducts = () => {
                 Location <span className="required">*</span>
               </label>
               <div className="location-input-group">
-                <span className="location-icon">📍</span>
+                <span className="location-icon"></span>
                 <input
                   type="text"
                   name="location"
@@ -190,22 +192,22 @@ const CreateProducts = () => {
         </div>
 
         {/* Contact Preference Section */}
-        <div className="form-section">
-          <h2 className="section-title">Contact Preference</h2>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <select
-                name="contactPreference"
-                value={formData.contactPreference}
-                onChange={handleInputChange}
-                className="form-select"
-              >
-                <option value="Phone">Phone</option>
-                <option value="Email">Email</option>
-                <option value="Message">Message</option>
-              </select>
-            </div>
+        <div className="contact-section">
+          <h2 className="section-title">Contact Information</h2>
+
+          <div className="form-group">
+            <label htmlFor="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="message">Message</label>
+            <textarea id="message" name="message" placeholder="Optional message or additional info" />
           </div>
         </div>
 

@@ -259,6 +259,7 @@ body {
   position: relative;
   background-color: #f3f4f6;
   aspect-ratio: 1;
+  object-fit: cover;
 }
 
 .product-list-item .product-image {
@@ -422,6 +423,7 @@ body {
 
 /* Product Details Page */
 .product-details-page {
+  margin-top: 100px;
   min-height: 100vh;
   background-color: #f9fafb;
   padding: 1.5rem;

@@ -8,6 +8,8 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Header from './components/Header';
 import Home from './Pages/Home';
+import ProfilePage from './Pages/Profile';
+import About from './Pages/About';
 
 
 const Layout = ({ children }) => {
@@ -33,6 +35,8 @@ const App = () => {
           <Route path="/create" element={<CreateProducts />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='/profile' element={<ProfilePage/>} />
+          <Route path='/about' element={<About/>} />
         </Routes>
       </Layout>
     </Router>
