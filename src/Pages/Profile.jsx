@@ -90,12 +90,12 @@ const ProfilePage = () => {
       <div className="profile-header">
         <div className="profile-info">
           <img
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face"
+            src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small/Basic_Ui__28186_29.jpg"
             alt="Profile"
             className="profile-avatar"
           />
           <div className="profile-details">
-            <h2 className="profile-name">{user?.email || "Guest User"}</h2>
+            <h2 className="profile-name">{user?.username || "Guest User"}</h2>
             <div className="profile-meta">
               <span className="rating">
                 <Star size={16} fill="#ffd700" />
@@ -103,7 +103,7 @@ const ProfilePage = () => {
               </span>
               <span className="location">
                 <MapPin size={16} />
-                New York, NY
+                {user?.location || "London"}
               </span>
               <span className="join-date">
                 <Calendar size={16} />
@@ -121,10 +121,10 @@ const ProfilePage = () => {
             <span className="stat-number">{userListings.length}</span>
             <span className="stat-label">Active Listings</span>
           </div>
-          <div className="stat">
+          {/* <div className="stat">
             <span className="stat-number">47</span>
             <span className="stat-label">Items Sold</span>
-          </div>
+          </div> */}
         </div>
       </div>
 

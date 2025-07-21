@@ -2,10 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
-const Header = () => {
+const Header = ({ isLoggedIn, handleLogout }) => {
   return (
     <header className="header">
-      {/* Left: Logo */}
       <div className="header-left">
         <div className="logo-box">SN</div>
         <span className="logo-text">SwapNest</span>
@@ -16,18 +15,24 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* Center: Search */}
       <div className="search-box">
         <input type="text" placeholder="Search products..." />
         <button>🔍</button>
       </div>
 
-      {/* Right: Sell, Cart, Profile, Login */}
       <div className="header-right">
         <Link to="/create" className="sell-btn">➕ Sell</Link>
         <Link to="/cart" className="icon">🛒</Link>
         <Link to="/profile" className="icon">👤</Link>
-        <Link to="/login" className="login-btn">Login</Link>
+        {isLoggedIn ? (
+          <button onClick={handleLogout} className="login-btn">
+            Logout
+          </button>
+        ) : (
+          <Link to="/login" className="login-btn">
+            Login
+          </Link>
+        )}
       </div>
     </header>
   );

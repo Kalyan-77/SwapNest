@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -37,10 +37,8 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(response.data));
 
       alert("Login successful!");
+      setIsLoggedIn(true);
       navigate('/');
-      // Example: localStorage.setItem("token", response.data.token);
-      // You can redirect here too
-
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       alert("Invalid credentials");
@@ -57,20 +55,6 @@ const Login = () => {
               <p className="hero-subtitle">
                 Sign in to your SwapNest account and continue your marketplace journey
               </p>
-              <div className="hero-features">
-                <div className="feature-item">
-                  <span className="feature-icon">⚡</span>
-                  <span>Quick and secure login</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🔒</span>
-                  <span>Your data is protected</span>
-                </div>
-                <div className="feature-item">
-                  <span className="feature-icon">🎯</span>
-                  <span>Personalized experience</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -115,19 +99,6 @@ const Login = () => {
                       {showPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
                   </div>
-                </div>
-
-                <div className="form-options">
-                  <label className="checkbox-label">
-                    <input 
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleInputChange}
-                    />
-                    Remember me
-                  </label>
-                  <a href="#" className="forgot-password">Forgot Password?</a>
                 </div>
 
                 <button type="submit" className="login-submit-btn">
